@@ -1,21 +1,41 @@
 # Sleeper Fantasy Football MCP Server
 
-[![npm version](https://badge.fury.io/js/sleeper-mcp.svg)](https://badge.fury.io/js/sleeper-mcp)
-[![Downloads](https://img.shields.io/npm/dm/sleeper-mcp.svg)](https://npmjs.org/package/sleeper-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/node/v/sleeper-mcp.svg)](https://nodejs.org/en/)
 
 A comprehensive Model Context Protocol (MCP) Server for integrating with Sleeper Fantasy Football. This server enables AI assistants like Claude to perform advanced fantasy football analysis and provide strategic recommendations.
 
+## 🔀 About this fork
+
+Forked from [FloSchl8/sleeper-mcp](https://github.com/FloSchl8/sleeper-mcp) at v1.1.1 to remove
+fabricated data. Upstream shipped several tools that invented plausible-looking output and
+presented it as real:
+
+- `research_player_status` returned hardcoded placeholder strings under a `web_research` key
+  while its description claimed it performed a web search. Removed; the tool now reports only
+  Sleeper's recorded roster/injury fields and says so.
+- `analyze_lineup` returned `total_projected_points`, a number synthesised from each player's
+  `search_rank`. Sleeper's API publishes no projections. Field removed.
+- `src/utils.ts` (dead code, imported by nothing) fabricated search results attributed to
+  real outlets with real-looking URLs (`nfl.com/injury-report`, `espn.com/nfl/news`), plus
+  mock defense rankings covering four teams per position and a second invented points
+  projection. File deleted.
+
+Everything that reads through to Sleeper's public API is untouched. For current injury news or
+projections, pair this server with a real web-search tool.
+
 ## 📦 Installation
 
-```bash
-# Install globally (recommended)
-npm install -g sleeper-mcp
+This fork is not published to npm — build it from source:
 
-# Or use with npx (no installation needed)
-npx sleeper-mcp
+```bash
+git clone https://github.com/trizzle21/sleeper-mcp.git
+cd sleeper-mcp
+npm install
+npm run build
 ```
+
+Then point your MCP client at the built entrypoint, `dist/index.js` (see **SETUP.md**).
 
 ## 🎯 What Can This Server Do?
 
@@ -27,7 +47,7 @@ npx sleeper-mcp
 ### 🏈 Player Analysis
 - **Player Search**: Find any NFL player in the Sleeper database
 - **Trending Players**: Hottest waiver wire pickups
-- **Injury Status**: Current injury reports with web research
+- **Injury Status**: Injury designations as recorded in Sleeper's player database
 - **Player Comparisons**: Head-to-head analysis for trade decisions
 
 ### 🧠 AI-Powered Recommendations
@@ -187,7 +207,7 @@ Start a conversation with Claude and try:
 
 ### Analysis & Recommendations
 - `analyze_lineup` - AI-powered lineup analysis
-- `research_player_status` - Web research on player status
+- `research_player_status` - Player status from Sleeper's database (no web search)
 - `get_waiver_suggestions` - Waiver wire recommendations
 - `get_start_sit_advice` - Specific start/sit advice
 - `get_transactions` - Recent league transactions
@@ -212,7 +232,6 @@ Start a conversation with Claude and try:
 - **Intelligent Caching** - Player data cached for 24 hours
 - **Rate Limit Respecting** - Handles Sleeper's 1000 calls/minute limit
 - **Comprehensive Error Handling** - Robust error recovery
-- **Web Research Integration** - Automatic injury report research
 - **Personalized Recommendations** - All advice tailored to your specific league
 
 ## 📖 Documentation

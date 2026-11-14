@@ -163,10 +163,6 @@ AI: Use research_player_status with player_name "Christian McCaffrey" and team "
       "injury_status": "Questionable",
       "injury_details": "Questionable (since 2024-10-15)"
     },
-    "web_research": [
-      "Search result for 'Christian McCaffrey SF NFL injury news': Recent reports suggest limited practice participation",
-      "Expert analysis: Monitor pregame warmups for final decision"
-    ],
     "fantasy_impact": "MODERATE RISK - Monitor closely, have backup plan ready",
     "recommendation": "CAUTION - Monitor injury reports leading up to game time"
   },
@@ -228,8 +224,7 @@ AI: Use analyze_lineup with league_id "987654321098765432" and user_id "12345678
           "is_starter": true
         }
       ],
-      "bench": [...],
-      "total_projected_points": 142.5
+      "bench": [...]
     },
     "questionable_players": [
       {
@@ -392,7 +387,7 @@ AI: Use compare_players with player1_id "4881" and player2_id "6794" and context
 **User:** "Christian McCaffrey is questionable again. Should I start him or play it safe?"
 
 **AI uses tools:**
-- `research_player_status` → Web search for latest news
+- `research_player_status` → Sleeper's recorded injury designation
 - `get_player_details` → Current roster status
 - `get_waiver_suggestions` → Backup options
 
@@ -457,7 +452,7 @@ AI: Use compare_players with player1_id "4881" and player2_id "6794" and context
    - Use `get_nfl_state` to confirm current NFL week
 
 3. **Injury Monitoring:**
-   - Use `research_player_status` for latest injury news
+   - Use `research_player_status` for Sleeper's injury designation
    - Check `analyze_lineup` for all questionable players at once
 
 4. **Waiver Planning:**

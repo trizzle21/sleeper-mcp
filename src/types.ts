@@ -222,7 +222,6 @@ export interface RosterWithDetails {
 export interface LineupAnalysis {
   user_id: string;
   week: number;
-  total_projected_points: number;
   questionable_players: PlayerWithDetails[];
   recommended_changes: {
     player: PlayerWithDetails;

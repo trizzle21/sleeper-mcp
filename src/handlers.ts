@@ -20,19 +20,6 @@ import {
 } from "./tools.js";
 import type { PlayerWithDetails, RosterWithDetails } from "./types.js";
 
-// Web search functionality (simplified for MCP context)
-async function performWebSearch(query: string): Promise<string[]> {
-  // In a real implementation, this would use a web search API
-  // For now, we'll return mock results to demonstrate the structure
-  const searchResults = [
-    `Search result for "${query}": Recent news and updates would appear here`,
-    `Injury report: Player status and expected return timeline`,
-    `Expert analysis: Fantasy football impact and recommendations`,
-  ];
-
-  return searchResults;
-}
-
 export async function handleToolCall(name: string, args: any) {
   try {
     switch (name) {
@@ -366,10 +353,6 @@ async function handleResearchPlayerStatus(args: any) {
     };
   }
 
-  // Perform web search for recent news
-  const searchQuery = `${targetPlayer.first_name} ${targetPlayer.last_name} ${targetPlayer.team} NFL injury news fantasy football`;
-  const webResults = await performWebSearch(searchQuery);
-
   // Analyze current status
   const analysis = {
     player: targetPlayer,
@@ -382,7 +365,6 @@ async function handleResearchPlayerStatus(args: any) {
         ? `${targetPlayer.injury_status}${targetPlayer.injury_start_date ? ` (since ${targetPlayer.injury_start_date})` : ""}`
         : "Healthy",
     },
-    web_research: webResults,
     fantasy_impact: generateFantasyImpactAnalysis({
       ...targetPlayer,
       full_name: `${targetPlayer.first_name} ${targetPlayer.last_name}`,
@@ -440,7 +422,6 @@ async function handleAnalyzeLineup(args: any) {
     lineup: {
       starters: rosterDetails.starters,
       bench: rosterDetails.bench,
-      total_projected_points: calculateProjectedPoints(rosterDetails.starters),
     },
     questionable_players: questionablePlayers,
     recommendations: recommendations.changes,
@@ -751,26 +732,6 @@ async function generateLineupRecommendations(
   }
 
   return { changes, waivers };
-}
-
-function calculateProjectedPoints(starters: PlayerWithDetails[]): number {
-  // Simple projection based on player tier/rank
-  return starters.reduce((total, player) => {
-    const rank = player.search_rank || 999;
-    let points = 8; // base points
-
-    if (rank <= 24)
-      points += 6; // elite tier
-    else if (rank <= 60)
-      points += 4; // strong tier
-    else if (rank <= 120) points += 2; // decent tier
-
-    if (player.injury_status === "Questionable") points -= 2;
-    else if (player.injury_status === "Doubtful") points -= 5;
-    else if (player.injury_status === "Out") points = 0;
-
-    return total + points;
-  }, 0);
 }
 
 function calculateLineupGrade(

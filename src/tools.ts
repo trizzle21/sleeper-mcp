@@ -364,7 +364,7 @@ export const tools: Tool[] = [
   {
     name: "research_player_status",
     description:
-      "Research a player's current status using web search to find injury updates, news, and playing time information",
+      "Report a player's status as recorded in Sleeper's player database: roster status, injury designation and injury start date, plus a risk assessment derived from those fields. This does NOT search the web and returns no news or expert analysis \u2014 use a web search tool for current reporting.",
     inputSchema: {
       type: "object",
       properties: {
