@@ -13,10 +13,18 @@ class SleeperMCPServer {
   private server: Server;
 
   constructor() {
-    this.server = new Server({
-      name: "sleeper-mcp",
-      version: "1.0.0",
-    });
+    this.server = new Server(
+      {
+        name: "sleeper-mcp",
+        version: "1.1.1",
+      },
+      {
+        // SDK 1.x asserts declared capabilities before dispatching a
+        // request, so tools must be advertised here or both
+        // tools/list and tools/call are rejected.
+        capabilities: { tools: {} },
+      },
+    );
 
     this.setupHandlers();
   }
